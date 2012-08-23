@@ -12,19 +12,7 @@
 <div id="main">
 	  <jsp:include page="header.html" />
 	<div id="content">
-			<div id="left">
-<div>
-SELECT TYPE OF ROOM :
-</div>
-<div>
-<select>
-  <option value="sbac" selected="selected">Single Bed A/C</option>
-  <option value="sbnac">Single Bed Non-A/C</option>
-  <option value="dbac">Double Bed A/C</option>
-  <option value="dbnac">Double Bed Non-A/C</option>
-</select>
-</div>
-</div>
+			<div id="left"></div>
 			<div id="right"></div>
 	</div>
 	  <jsp:include page="footer.html" />

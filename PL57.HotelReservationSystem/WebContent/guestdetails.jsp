@@ -12,19 +12,16 @@
 <div id="main">
 	  <jsp:include page="header.html" />
 	<div id="content">
-			<div id="left">
-<div>
-SELECT TYPE OF ROOM :
-</div>
-<div>
-<select>
-  <option value="sbac" selected="selected">Single Bed A/C</option>
-  <option value="sbnac">Single Bed Non-A/C</option>
-  <option value="dbac">Double Bed A/C</option>
-  <option value="dbnac">Double Bed Non-A/C</option>
-</select>
-</div>
-</div>
+			<div id="left"><div >
+<form action="">
+<div>First name:</div><div> <input type="text" name="firstname" /></div><br />
+<div>Last name: </div><div><input type="text" name="lastname" /></div><br />
+<div>Address: </div><div><textarea rows="5" cols="17" name="address" ></textarea></div><br />
+<div>Phone No.:</div><div> <input type="text" name="phnum" /></div><br />
+<div>Email: </div><div><input type="text" name="email" /></div><br />
+<input type="button" value="Next">
+</form>
+</div></div>
 			<div id="right"></div>
 	</div>
 	  <jsp:include page="footer.html" />

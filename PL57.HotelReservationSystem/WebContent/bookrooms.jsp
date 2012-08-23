@@ -13,18 +13,18 @@
 	  <jsp:include page="header.html" />
 	<div id="content">
 			<div id="left">
-<div>
-SELECT TYPE OF ROOM :
+			<div>
+<form action="">
+<div>Type of Room:</div><div><select name="roomType"></select></div><br />
+<div>Arrival Date: </div><div><input type="text" name="arrival" /></div><br />
+<div>Departure Date:</div><div> <input type="text" name="departure" /></div><br />
+<div>Adults: </div><div><input type="text" name="adults" /></div><br />
+<div>Children:</div><div> <input type="text" name="children" />(Below age of 8)</div><br />
+<div>Number of Rooms:</div><div> <input type="text" name="roomsnum" /></div><br />
+<input type="button" value="Next">
+</form>
 </div>
-<div>
-<select>
-  <option value="sbac" selected="selected">Single Bed A/C</option>
-  <option value="sbnac">Single Bed Non-A/C</option>
-  <option value="dbac">Double Bed A/C</option>
-  <option value="dbnac">Double Bed Non-A/C</option>
-</select>
-</div>
-</div>
+			</div>
 			<div id="right"></div>
 	</div>
 	  <jsp:include page="footer.html" />
