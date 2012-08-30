@@ -19,7 +19,7 @@
 SELECT TYPE OF ROOM :
 </div>
 <div>
-
+<form method="GET" action="reservation/checkRoomtypeServlet">
 <select>
 
 <%ArrayList<String> dataList=(ArrayList<String>)request.getAttribute("data");
@@ -27,6 +27,12 @@ for(int i=0;i<dataList.size();i++) {%>
   <option value="<%=(String)dataList.get(i)%>"><%=(String)dataList.get(i)%></option>
 <%} %>
 </select>
+<input type="button" value="Check Room Availability" name="btn_checkRoom"/>
+</form>
+
+	<div id="roomstatus">
+	
+	</div>
 </div>
 </div>
 			<div id="right"></div>
