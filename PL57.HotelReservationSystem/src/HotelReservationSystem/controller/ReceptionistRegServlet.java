@@ -1,4 +1,6 @@
-package receptionist;
+package HotelReservationSystem.controller;
+
+import helper.HotelConnection;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,19 +15,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import reservation.HotelConnection;
 
 /**
  * Servlet implementation class ReceptionistReg
  */
 @WebServlet("/ReceptionistReg")
-public class ReceptionistReg extends HttpServlet {
+public class ReceptionistRegServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReceptionistReg() {
+    public ReceptionistRegServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
