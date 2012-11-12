@@ -1,91 +1,108 @@
 package HotelReservationSystem.controller;
 
-import helper.HotelConnection;
-
 import java.io.IOException;
+import java.util.GregorianCalendar;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+
+import HotelReservationSystem.model.Guest;
+import HotelReservationSystem.model.Reservation;
 
 
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-/**
- * Servlet implementation class guestReservationServlet
- */
 @WebServlet("/guestReservationServlet")
 public class guestReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	String page="reservationStatus.jsp";
+	
     public guestReservationServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-		 PrintWriter out=response.getWriter();
-	       out.println("<html>");
-	    out.println("<head><title>Guest Details</title></head>");
 
-	    out.println("<body>");
-	    	HotelConnection hc=new HotelConnection();
-	    	Connection connect = hc.connect();
-	        String firstname=request.getParameter("firstname");
-	        String lastname=request.getParameter("lastname");
-	        String address=request.getParameter("address");
-	        String phnum=request.getParameter("phnum");
-	        String email=request.getParameter("email");
-	        
-	        String insertquery="insert into guest(gfname,glname,gaddress,gphone,gemail) values(?,?,?,?,?)";
-	        
+		
+		
+		  try {
+			  HttpSession ses = request.getSession(true);
+			  Transaction tran = null;		
+			  SessionFactory sessionFactory=configureSessionFactory();
+			  Session session=sessionFactory.openSession();
+			  tran=session.beginTransaction();
+				try {
+						
+					Guest guest= new Guest();				  
+				    guest.setGfname(request.getParameter("firstname"));
+				    guest.setGlname(request.getParameter("lastname"));
+				    guest.setGemail(request.getParameter("email"));
+				    guest.setGphone(request.getParameter("phnum"));
+				    guest.setGaddress(request.getParameter("address"));
+				    session.save(guest);
+				    
+				   				    
+					Reservation res = new Reservation();
+				    res.setRoomtypeid((String)ses.getAttribute("roomsTypeId"));
+				    res.setArrivatDate((GregorianCalendar)ses.getAttribute("aDate"));
+				    res.setDepartureDate((GregorianCalendar)ses.getAttribute("dDate"));
+				    res.setGuestId(guest.getGuestId());
+				    res.setAdults((Integer)ses.getAttribute("adults"));
+				    res.setChildren((Integer)ses.getAttribute("children"));
+				    
+				    session.save(res);
+				    tran.commit();
+				    
+				    RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 
+					  if (dispatcher != null){
 
-	        PreparedStatement stmt=connect.prepareStatement(insertquery,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+					  dispatcher.forward(request, response);
 
-	        stmt.setString(1,firstname);
-	        stmt.setString(2,lastname);
-	         stmt.setString(3,address);
-	          stmt.setString(4,phnum);
-	           stmt.setString(5,email);
+					  } 
+				
+				
+				
+				} catch (Exception e) {
+					session.getTransaction().rollback();
+					System.out.println("Error");
+				}
+				finally{
+					session.close();
+				}
+			  
+		 
+		 
 
+		  }
+		  catch(Exception e){
 
-	        stmt.executeUpdate();
+			  System.out.println("Exception is ;"+e);
 
-
-	        connect.close();
-
-
-	        out.println("<h3>THANK YOU......You are now a member</h3>");
-	        out.println("<a href=displayPNR.jsp>Click To display your PNR</a>");
-	    out.println("</body>");
-	out.println("</html>");
+			  }
+	
+		
 	}
-	catch(Exception e)
-	{
-	    System.out.println("error"+e);
+	
+	private static SessionFactory configureSessionFactory(){
+		SessionFactory sessionFactory;
+		ServiceRegistry serviceRegistry;
+	    Configuration configuration = new Configuration();
+	    configuration.configure();
+	    serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
+	    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+	    return sessionFactory;
 	}
-
-
-	}
-
 }

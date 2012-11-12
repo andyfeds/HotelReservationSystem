@@ -1,104 +1,86 @@
 package HotelReservationSystem.controller;
 
-import helper.HotelConnection;
-
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 
-import java.sql.Connection;
+import HotelReservationSystem.model.RoomTypes;
 
-/**
- * Servlet implementation class roomtypesServlet
- */
+
 @WebServlet("/roomtypesServlet")
 public class roomtypesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
-	  //Setting JSP page
-	
-
-
 	String page="CheckRoomType.jsp";
-    /**
-     * Default constructor. 
-     */
+   
     public roomtypesServlet() {
-        // TODO Auto-generated constructor stub
     }
 
-   
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		PrintWriter out = response.getWriter();
-
-		  //Establish connection to MySQL database
-
-		  ResultSet rs;
-
-		  response.setContentType("text/html");
-
-		  ArrayList<String> dataList	= new ArrayList<String>(); 
-
 		  try {
 
-		 // Load the database driver
-			  HotelConnection chkRm = new HotelConnection();
+				ArrayList<String> dataList=new ArrayList<String>();
+				
+				SessionFactory sessionFactory=configureSessionFactory();
+				Session session=sessionFactory.openSession();
+				session.beginTransaction();
+				try {
+						
+						Query query = session.createQuery("from RoomTypes");
+												
+						@SuppressWarnings("unchecked")
+						List<RoomTypes> list=query.list();
+						
+						Iterator<RoomTypes> iterator=list.iterator();		
+						while(iterator.hasNext())
+						{
 
-			  rs = chkRm.connect("Select roomtype from roomtypes");
-			 
-			  while (rs.next ())
-			  {
-
-		  //Add records into data list
-
-				  dataList.add(rs.getString("roomtype"));
+							dataList.add(iterator.next().getRoomType());
 
 		
-			  	}
+						}
 
 		 
-		  request.setAttribute("data",dataList);
+						request.setAttribute("data",dataList);
+		  
+						RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 
-		  //Dispatching request
+						if (dispatcher != null){
 
-		  RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+							dispatcher.forward(request, response);
 
-		  if (dispatcher != null){
-
-		  dispatcher.forward(request, response);
-
-		  } 
-		  Connection con;
-		  con = chkRm.getCon();
-		  try {
-			 if(con!=null)
-			con.close();
-		  	} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		  	}
-
+						} 
+		 
+					} 
+					catch (Exception e)
+					{
+						session.getTransaction().rollback();
+						System.out.println("Error");
+						}
+				finally{
+					session.close();
+				}
+			  
+		 
+		 
 
 		  }
 		  catch(Exception e){
@@ -108,7 +90,15 @@ public class roomtypesServlet extends HttpServlet {
 			  }
 	
 		
-	
 	}
-	
+	private static SessionFactory configureSessionFactory(){
+		SessionFactory sessionFactory;
+		ServiceRegistry serviceRegistry;
+	    Configuration configuration = new Configuration();
+	    configuration.configure();
+	    serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
+	    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+	    return sessionFactory;
+	}
 }
+

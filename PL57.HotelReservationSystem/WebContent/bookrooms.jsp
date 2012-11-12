@@ -15,14 +15,14 @@
 	<div id="content">
 			<div id="left">
 			<div>
-<form action="">
+<form method="POST" action="bookRoomServlet">
  
-
 <div>Adults: </div><div><input type="text" name="adults" /></div><br />
 <div>Children:</div><div> <input type="text" name="children" />(Below age of 8)</div><br />
 
-<input type="button" value="Next">
+<input type="submit" value="Next">
 </form>
+
 </div>
 			</div>
 			<div id="right"></div>
