@@ -1,99 +1,113 @@
 package HotelReservationSystem.controller;
 
-import helper.HotelConnection;
-
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+
+import HotelReservationSystem.model.Receptionist;
 
 
 
-@WebServlet("/ReceptionistReg")
+@WebServlet("/ReceptionistRegServlet")
 public class ReceptionistRegServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	String page = "receptionisthome.jsp";
+    
     public ReceptionistRegServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HotelConnection con = new HotelConnection();
-		Connection connect = con.connect();
 		
-		
-		response.setContentType("text/html");
-		
-		PrintWriter out = response.getWriter();
-		  //get the variables entered in the form
-		  String fname = request.getParameter("First_Name");
-		  String lname = request.getParameter("Last_Name");
-		  String dob = request.getParameter("dob");
-		  String eId = request.getParameter("Email_Id");
-		  String password = request.getParameter("Password");
-		  String M_Number = request.getParameter("Mobile_Number");
-		  String gender = request.getParameter("Gender");
-		  String address = request.getParameter("Address");
-		  String city = request.getParameter("City");
-		  String pin = request.getParameter("Pin_Code");
-		  String state = request.getParameter("State");
-		  String country = request.getParameter("Country");
-		  
-		  String sql = "insert into receptionist(fname,lname,dob,eId,password,M_Number,gender,address,city,pin,state,country) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+		try {
+			
+			 HttpSession ses = request.getSession(true);
+			  Transaction tran = null;		
+			  SessionFactory sessionFactory=configureSessionFactory();
+			  Session session=sessionFactory.openSession();
+			  tran=session.beginTransaction();
+			
+			  try {
 				  
-		  		  PreparedStatement pst;
+				  Calendar dob = new GregorianCalendar();
+				  Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dob"));
+				  dob.setTime(date);
+				  
+				  String gender = request.getParameter("Gender");
+				  
+				  Receptionist receptionist = new Receptionist();
+				  
+				  receptionist.setFname(request.getParameter("First_Name"));
+				  receptionist.setLname(request.getParameter("Last_Name"));
+				  receptionist.setUsername(request.getParameter("Username"));
+				  receptionist.setDob((GregorianCalendar)dob);
+				  receptionist.seteId(request.getParameter("email"));
+				  receptionist.setPassword(request.getParameter("Password"));
+				  receptionist.setM_Number(request.getParameter("Mobile_Number"));
+				  receptionist.setGender(gender);
+				  receptionist.setAddress(request.getParameter("Address"));
 				
-		  		  try {
-					
-		  		  pst = connect.prepareStatement(sql);
+				  
+				  session.save(receptionist);
+				  ses=request.getSession(true);
+				  ses.setAttribute("username", receptionist.getUsername());
+				  tran.commit();
 				
-				  pst.setString(1, fname);
-				  pst.setString(2, lname);
-				  pst.setString(3, dob);
-				  pst.setString(4, eId);
-				  pst.setString(5, password);
-				  pst.setString(6, M_Number);
-				  pst.setString(7, gender);
-				  pst.setString(8, address);
-				  pst.setString(9, city);
-				  pst.setString(10, pin);
-				  pst.setString(11, state);
-				  pst.setString(12, country);
+				  request.setAttribute("msg","Registration Successfull!!!");
+				  RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+
+				  if (dispatcher != null){
+
+				  dispatcher.forward(request, response);
+
+				  } 
 				  
-				  int numRowsChanged = pst.executeUpdate();
-				  // show that the new account has been created
-				  out.println(" Hello : ");
-				  out.println(numRowsChanged);
-				  pst.close();
-				  
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		
+			} catch (Exception e) {
+				// TODO: handle exception
+				session.getTransaction().rollback();
+				System.out.println("Error" + e);
+			}
+			  finally{
+				  session.close();
+			  }
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			
+			 System.out.println("Exception is ;"+e);
+		}
 
 
+	}
+	
+	private static SessionFactory configureSessionFactory(){
+		SessionFactory sessionFactory;
+		ServiceRegistry serviceRegistry;
+	    Configuration configuration = new Configuration();
+	    configuration.configure();
+	    serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
+	    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+	    return sessionFactory;
 	}
 
 }

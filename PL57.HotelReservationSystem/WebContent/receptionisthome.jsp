@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Royal Stags Hotel</title>
+<title>Royal Stags Hotel : Receptionist home</title>
 <link href="css.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -13,9 +13,8 @@
 	  <jsp:include page="header.html" />
 	<div id="content">
 			<div id="left">
-			<h2>ROOM BOOKED SUCCESSFULLY</h2>
-			<h1>Your PNR Number :<%=request.getAttribute("pnr")%></h1>
-			<h6>Please Save your PNR number for further Queries and cancellations.</h6>
+			<h2><%=request.getAttribute("msg") %></h2>
+			<%=session.getAttribute("username")%> logged In
 			</div>
 			<div id="right"></div>
 	</div>

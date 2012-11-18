@@ -12,11 +12,7 @@
 <div id="main">
 	  <jsp:include page="header.html" />
 	<div id="content">
-			<div id="left">
-			<h2>ROOM BOOKED SUCCESSFULLY</h2>
-			<h1>Your PNR Number :<%=request.getAttribute("pnr")%></h1>
-			<h6>Please Save your PNR number for further Queries and cancellations.</h6>
-			</div>
+			<div id="left"><%=request.getAttribute("msg") %></div>
 			<div id="right"></div>
 	</div>
 	  <jsp:include page="footer.html" />

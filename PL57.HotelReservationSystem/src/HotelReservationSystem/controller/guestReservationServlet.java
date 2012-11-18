@@ -2,6 +2,7 @@ package HotelReservationSystem.controller;
 
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
+import HotelReservationSystem.model.CreditCard;
 import HotelReservationSystem.model.Guest;
 import HotelReservationSystem.model.Reservation;
 
@@ -27,6 +29,7 @@ public class guestReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	String page="reservationStatus.jsp";
+	
 	
     public guestReservationServlet() {
         super();
@@ -53,8 +56,9 @@ public class guestReservationServlet extends HttpServlet {
 				    guest.setGaddress(request.getParameter("address"));
 				    session.save(guest);
 				    
-				   				    
+				   		    
 					Reservation res = new Reservation();
+					res.setPnr(generatePNR(guest));
 				    res.setRoomtypeid((String)ses.getAttribute("roomsTypeId"));
 				    res.setArrivatDate((GregorianCalendar)ses.getAttribute("aDate"));
 				    res.setDepartureDate((GregorianCalendar)ses.getAttribute("dDate"));
@@ -63,8 +67,21 @@ public class guestReservationServlet extends HttpServlet {
 				    res.setChildren((Integer)ses.getAttribute("children"));
 				    
 				    session.save(res);
+				    
+				   /* Calendar expDate = new GregorianCalendar();						
+					Date eDate = new SimpleDateFormat("MM-yy").parse(request.getParameter("expiry"));
+					expDate.setTime(eDate);*/
+				    
+				    CreditCard card=new CreditCard();
+				    card.setCreditcardno(request.getParameter("cardno"));
+				    card.setCvv(Integer.parseInt(request.getParameter("cvv")));  
+				    card.setExpiry(request.getParameter("expiry"));
+				    card.setGuestid(guest.getGuestId());
+				    card.setReservationid(res.getReserveId());
+				    session.save(card);
 				    tran.commit();
 				    
+				    request.setAttribute("pnr",res.getPnr());
 				    RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 
 					  if (dispatcher != null){
@@ -96,6 +113,19 @@ public class guestReservationServlet extends HttpServlet {
 		
 	}
 	
+	private int generatePNR(Guest guest) {
+		String guestid=String.valueOf(guest.getGuestId());
+		
+		Random rand=new Random();
+		int randomNum = rand.nextInt(999- 101+ 1) + 101;
+		
+		String rno=String.valueOf(randomNum);
+		String spnr=guestid+rno;
+		int pnr=Integer.parseInt(spnr);
+		return pnr;
+	}
+
+
 	private static SessionFactory configureSessionFactory(){
 		SessionFactory sessionFactory;
 		ServiceRegistry serviceRegistry;

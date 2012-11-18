@@ -12,6 +12,7 @@ public class Reservation {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	int ReserveId;
+	int pnr;	
 	Calendar arrivalDate;
 	Calendar departureDate;
 	String roomtypeid;
@@ -26,6 +27,14 @@ public class Reservation {
 	public void setReserveId(int reserveId) {
 		ReserveId = reserveId;
 	}
+	
+	public int getPnr() {
+		return pnr;
+	}
+	public void setPnr(int pnr) {
+		this.pnr = pnr;
+	}
+	
 	public String getRoomtypeid() {
 		return roomtypeid;
 	}

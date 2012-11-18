@@ -19,49 +19,49 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
-import HotelReservationSystem.model.RoomTypes;
+import HotelReservationSystem.model.GuestQuery;
 
-
-@WebServlet("/roomtypesServlet")
-public class roomtypesServlet extends HttpServlet {
+@WebServlet("/GetQueryServlet")
+public class GetQueryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	//String page="CheckRoomType.jsp";
-	String page="bookrooms.jsp";
-    public roomtypesServlet() {
+       
+  
+    public GetQueryServlet() {
+        super();
     }
 
-  
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		  try {
 
-				ArrayList<String> dataList=new ArrayList<String>();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		 try {
+
+				ArrayList<GuestQuery> dataList=new ArrayList<GuestQuery>();
 				
 				SessionFactory sessionFactory=configureSessionFactory();
 				Session session=sessionFactory.openSession();
 				session.beginTransaction();
 				try {
 						
-						Query query = session.createQuery("from RoomTypes");
+						Query query = session.createQuery("from GuestQuery");
 												
 						@SuppressWarnings("unchecked")
-						List<RoomTypes> list=query.list();
+						List<GuestQuery> list=query.list();
 						
-						Iterator<RoomTypes> iterator=list.iterator();		
+						
+						Iterator<GuestQuery> iterator=list.iterator();		
 						while(iterator.hasNext())
 						{
-
-							dataList.add(iterator.next().getRoomType());
-
+							GuestQuery gq=iterator.next();
+							if(gq.getStatus()==1)
+								dataList.add(gq);
+								
 		
 						}
 
 		 
 						request.setAttribute("data",dataList);
 		  
-						RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+						RequestDispatcher dispatcher = request.getRequestDispatcher("checkquery.jsp");
 
 						if (dispatcher != null){
 
@@ -90,11 +90,6 @@ public class roomtypesServlet extends HttpServlet {
 			  }
 	
 		
-	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		this.doGet(request, response);
 	}
 	private static SessionFactory configureSessionFactory(){
 		SessionFactory sessionFactory;

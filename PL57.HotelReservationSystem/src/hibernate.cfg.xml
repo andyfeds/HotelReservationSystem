@@ -32,6 +32,13 @@
         <mapping class="HotelReservationSystem.model.RoomTypes"/>
         <mapping class="HotelReservationSystem.model.Reservation"/>
         <mapping class="HotelReservationSystem.model.Guest"/>
+        <mapping class="HotelReservationSystem.model.Receptionist"/>
+        <mapping class="HotelReservationSystem.model.CreditCard"/>
+        <mapping class="HotelReservationSystem.model.Cancel"/>
+        <mapping class="HotelReservationSystem.model.GuestQuery"/>
+        <mapping class="HotelReservationSystem.model.CheckIn"/>
+        <mapping class="HotelReservationSystem.model.Room"/>
+        <mapping class="HotelReservationSystem.model.CheckOut"/>
        
 
     </session-factory>

@@ -30,8 +30,9 @@ import HotelReservationSystem.model.RoomTypes;
 @WebServlet("/checkRoomTypeServlet")
 public class checkRoomTypeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String page="guestdetails.jsp";
-    
+	private String page="guestdetails.jsp";
+	
+	private boolean isAvailable=false;
     public checkRoomTypeServlet() {
         super();
     }
@@ -59,7 +60,13 @@ public class checkRoomTypeServlet extends HttpServlet {
 						
 				
 					if(noRooms>list.get(0).getAvailRooms())
-						response.getWriter().print("No Rooms Available");
+					{
+						request.setAttribute("msg","Type of Room selected not available.");
+						RequestDispatcher dispatcher= request.getRequestDispatcher("/roomtypesServlet");  
+							  if (dispatcher != null)
+							  dispatcher.forward(request, response);
+				
+					}
 					else
 					{
 						HttpSession ses = request.getSession(true);
@@ -71,96 +78,80 @@ public class checkRoomTypeServlet extends HttpServlet {
 						List<Reservation> datelist=query2.list();
 						
 						
+					
 						
 						Calendar aDate = new GregorianCalendar();						
-						Date date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(request.getParameter("arrival"));
+						Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("arrival"));
 						aDate.setTime(date1);
 						
 										
 						Calendar dDate = new GregorianCalendar();						
-						Date date2 = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(request.getParameter("departure"));
+						Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("departure"));
 						dDate.setTime(date2);
 						
-						if(datelist.size()==0)
-						{
-							ses.setAttribute("aDate",aDate);
-							ses.setAttribute("dDate",dDate);
-							ses.setAttribute("noRooms",noRooms);
-							ses.setAttribute("roomsTypeId",list.get(0).getRoomtypeid());
-							ses.setAttribute("adults",Integer.parseInt(request.getParameter("adults")));
-							ses.setAttribute("children",Integer.parseInt(request.getParameter("children")));
-
-							  //Dispatching request
-
-							  RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-
-							  if (dispatcher != null){
-
-							  dispatcher.forward(request, response);
-
-							  } 
-						}
+					if(datelist.size()<=0)
+					{						
+						isAvailable=true;
+						
+					}
+					else
+					{	
+						
 						
 						for(int i=0;i<datelist.size();i++)
 						{
 						
-						if(aDate.before(datelist.get(i).getArrivatDate()) && dDate.before(datelist.get(i).getArrivatDate()))
-						{
+							if(aDate.before(datelist.get(i).getArrivatDate()) && dDate.before(datelist.get(i).getArrivatDate()))
+							{
+								isAvailable=true;
 							
+							}
+							else
+							{					
+								if(aDate.after(datelist.get(i).getDepartureDate())&& dDate.after(datelist.get(i).getArrivatDate()))
+								{								
+								isAvailable=true;
+								}
+								else
+								{
+								isAvailable=false;
+								request.setAttribute("msg","Room not available during this period");
+								
+								RequestDispatcher dispatcher= request.getRequestDispatcher("/roomtypesServlet");  
+									  if (dispatcher != null)
+									  dispatcher.forward(request, response);
+									break;
+								}
+							
+												
+							}
+						
+						}
+					}
+						
+						if(isAvailable==true)
+						{
+
+							Query query3 = session.createQuery("from RoomTypes where roomType= :roomType");
+							query3.setParameter("roomType",request.getParameter("roomtype"));
+							
+							@SuppressWarnings("unchecked")
+							List<RoomTypes> typelist=query3.list();
+							System.out.print(typelist.get(0).getRoomtypeid());
 							
 							ses.setAttribute("aDate",aDate);
 							ses.setAttribute("dDate",dDate);
 							ses.setAttribute("noRooms",noRooms);
-							ses.setAttribute("roomsTypeId",datelist.get(i).getRoomtypeid());
+							ses.setAttribute("roomsTypeId",typelist.get(0).getRoomtypeid());
 							ses.setAttribute("adults",Integer.parseInt(request.getParameter("adults")));
-							ses.setAttribute("children",Integer.parseInt(request.getParameter("children")));
+						    ses.setAttribute("children",Integer.parseInt(request.getParameter("children")));
 
 							  //Dispatching request
-
+						    
 							  RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-
-							  if (dispatcher != null){
-
-							  dispatcher.forward(request, response);
-
-							  } 
-						}
-						else
-						{					
-							if(aDate.after(datelist.get(i).getDepartureDate())&& dDate.after(datelist.get(i).getArrivatDate()))
-							{
-								
-								 ses.setAttribute("aDate",aDate);
-								ses.setAttribute("dDate",dDate);
-								 ses.setAttribute("noRooms",noRooms);
-								 ses.setAttribute("roomsTypeId",datelist.get(i).getRoomtypeid());
-								 ses.setAttribute("adults",Integer.parseInt(request.getParameter("adults")));
-							     ses.setAttribute("children",Integer.parseInt(request.getParameter("children")));
-
-								  //Dispatching request
-
-								  RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-
-								  if (dispatcher != null){
-
+							  if (dispatcher != null)
 								  dispatcher.forward(request, response);
 
-								  } 
-								
-							}
-							else
-							{
-								response.getWriter().print("Arrival and Departure CONFLICT ");
-								response.getWriter().print("OLD Arrival :"+datelist.get(i).getArrivatDate().get(Calendar.DATE));
-								response.getWriter().print("NEW Arrival :"+aDate.get(Calendar.DATE));
-								response.getWriter().print("OLD Departure:"+datelist.get(i).getDepartureDate().get(Calendar.DATE));
-								response.getWriter().print("NEW Departure:"+dDate.get(Calendar.DATE));
-							}
-							
-							
-							
-						}
-						
 						}
 						
 						
@@ -187,7 +178,9 @@ public class checkRoomTypeServlet extends HttpServlet {
 	
 		
 	}
-	private static SessionFactory configureSessionFactory(){
+	
+	private static SessionFactory configureSessionFactory()
+	{
 		SessionFactory sessionFactory;
 		ServiceRegistry serviceRegistry;
 	    Configuration configuration = new Configuration();
