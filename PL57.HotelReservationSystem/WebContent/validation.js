@@ -63,9 +63,10 @@
   }
 
   
-  function trim(s) {
+  function trim(s) 
+  {
 	    return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
-	}
+  }
 
   
   function checkValid(f)
@@ -95,7 +96,8 @@
   
   
   function RequiredField(f)
-  {var i,field;
+  {
+	 var i,field;
 	  for(i=0; i<f.elements.length; i++){
 		 field=f.elements[i].name;
 		 value=trim(f.elements[i].value);
@@ -124,4 +126,19 @@
     return false;
     }
   return true;
+  }
+  
+  function validateNumber(f)
+  {
+	  var number = /^[0-9]+$/;
+	  input = document.getElementById("phnum").value;
+	  if(input.match(number))
+		  {
+		  	return true;
+		  }
+	  else
+		  {
+		  	document.getElementById("error_phnum").innerHTML="* "+field+" Enter Numbers Only";
+		  	return false;
+		  }
   }

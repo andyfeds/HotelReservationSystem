@@ -15,7 +15,7 @@
 	<div id="content">
 			<div id="left">
 			
-<form name="frm" class="form" method="POST" action="guestReservationServlet" onSubmit="return (checkValid(this) && validateEmail());">
+<form name="frm" class="form" method="POST" action="guestReservationServlet" onSubmit="return (checkValid(this) && validateEmail() && RequiredField(this) && validateNumber(this));">
 <table>
 <tr>
 <td>First name:</td>
