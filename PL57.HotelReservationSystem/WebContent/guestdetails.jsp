@@ -37,7 +37,7 @@
 
 <tr>
 <td>Phone No.:</td>
-<td><input type="text" name="phnum" />
+<td><input id="pnumber" type="text" name="phnum" />
 <span id="error_phnum" class="error">*</span></td>
 </tr>
 

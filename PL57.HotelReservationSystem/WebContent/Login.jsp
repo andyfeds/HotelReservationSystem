@@ -7,9 +7,15 @@
 <title>Insert title here</title>
 </head>
 <body>
- <form method="POST" action="Login">
-   <div>Username : <input type="text" name="username"></div>
-   <div>Password : <input type="text" name="password"></div>
+ <form method="POST" action="Login" onSubmit="return (RequiredField(this))">
+   <div>
+   		Username : <input type="text" name="username">
+   		<span id="error_username" class="error">*</span>
+   </div>
+   <div>
+   		Password : <input type="text" name="password">
+   		<span id="error_password" class="error">*</span>
+   </div>
    <div><input type="submit" value="Submit"></div> 
  </form>
 </body>

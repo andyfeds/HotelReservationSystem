@@ -92,9 +92,6 @@
 		return true;
   }	
   
-  
-  
-  
   function RequiredField(f)
   {
 	 var i,field;
@@ -128,10 +125,10 @@
   return true;
   }
   
-  function validateNumber(f)
+  function validateNumber()
   {
 	  var number = /^[0-9]+$/;
-	  input = document.getElementById("phnum").value;
+	  input = document.getElementById("pnumber").value;
 	  if(input.match(number))
 		  {
 		  	return true;

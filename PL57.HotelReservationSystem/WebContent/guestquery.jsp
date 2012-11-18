@@ -35,7 +35,8 @@
 			
 			</tr>
 			<tr>
-			<td colspan="2"><%=request.getAttribute("msg") %></td>
+			<%if(request.getAttribute("msg")!=null) {%>
+			<td colspan="2"><%=request.getAttribute("msg") %></td><%} %>
 			</tr>
 			</table>
 			</form>

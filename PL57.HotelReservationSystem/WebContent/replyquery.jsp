@@ -19,15 +19,8 @@
 			<table>
 			<tr>
 			<td>Query: </td>
-			<%String queryString = request.getQueryString();
-			String[] parts;
-			String values;
-				for (String parameter : queryString.split("&")) {
-   				  parts= parameter.split("=");
-    			
-				
-   				 %>
-			<td><label for="query"><%=parts[1] %></label></td><%} %>
+			
+			<td><label for="query"><%=session.getAttribute("qbody") %></label></td>
 			</tr>
 			
 			<tr>
@@ -40,8 +33,10 @@
 			
 			</tr>
 			<tr>
-			<td colspan="2"><%=request.getAttribute("msg") %></td>
+			<%if(request.getAttribute("msg")!=null) {%>
+			<td colspan="2"><%=request.getAttribute("msg") %></td><%}%>
 			</tr>
+					
 			</table>
 			</form>
 			</div>

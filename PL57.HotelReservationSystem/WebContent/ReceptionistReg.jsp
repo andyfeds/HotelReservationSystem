@@ -31,7 +31,7 @@ height: 20px;
 	  <jsp:include page="header.html" />
 	<div id="content">
 			<div id="left">
-<form action="ReceptionistRegServlet" method="post" onSubmit="return RequiredField(this);return checkPassConfirm();">
+<form action="ReceptionistRegServlet" method="post" onSubmit="return (checkValid(this) && validateEmail() && RequiredField(this) && validateNumber(this) && checkPassConfirm());">
 	<div>
 		<div>
 			<div>FIRST NAME</div>
@@ -51,7 +51,8 @@ height: 20px;
 		
 		<div>
 			<div>EMAIL ID</div>
-			<div><input type="text" name="email" maxlength="100" /><span id="error_email" class="error">*</span></div>
+			<div><input type="text" name="email" maxlength="100" />
+			<span id="error_email" class="error">*</span></div>
 		</div>
 		
 		
@@ -86,8 +87,9 @@ required="true" value="1990-01-01"/>
 		
 		<div>
 			<div>MOBILE NUMBER</div>
-			<div><input type="text" name="Mobile_Number" maxlength="10" onFocus="checkPassConfirm();" />
+			<div><input id="pnumber" type="text" name="Mobile_Number" maxlength="10" onFocus="checkPassConfirm();" />
 			(10 digit number)
+			<span id="error_phnum" class="error">*</span></div>
 			</div>
 		</div>
 
