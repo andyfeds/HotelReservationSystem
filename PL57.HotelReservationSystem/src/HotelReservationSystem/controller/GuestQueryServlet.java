@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,7 +32,7 @@ public class GuestQueryServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		  try {
-			
+			  
 			  Transaction tran = null;		
 			  SessionFactory sessionFactory=configureSessionFactory();
 			  Session session=sessionFactory.openSession();
@@ -51,7 +52,7 @@ public class GuestQueryServlet extends HttpServlet {
 				  
 				    session.save(query);
 				    tran.commit();
-				    
+				
 				    request.setAttribute("msg","Query has been posted successfully.");
 				    RequestDispatcher dispatcher = request.getRequestDispatcher("guestquery.jsp");
 

@@ -9,9 +9,10 @@
 </head>
 <body>
 	<div id="main">
-	  <jsp:include page="header.html" />
+	  <jsp:include page="ReceptHeader.html" />
 	<div id="content">
 			<div id="left">
+			<h1>Check In Guest</h1>
 			<div>
 					<h4>This is an Invalid Reservation ID!!! Please Confirm....</h4>
 			</div>

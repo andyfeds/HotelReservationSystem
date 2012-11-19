@@ -36,15 +36,16 @@ width:580px;
 min-height:500px;
 height:auto;
 float:left;
-margin:20px 20px 10px 80px;
-padding:20px 10px 10px 80px;
+margin:20px 20px 10px 50px;
+padding:20px 10px 10px 50px;
+
 
 }
 
 
 #right
 {
-width:200px;
+width:150px;
 height:auto;
 min-height:500px;
 float:right;
@@ -117,6 +118,9 @@ padding-top:10px;
 .form{
 	width:600px;
 	height:auto;
+	border:solid #6F3A15 4px;
+	box-shadow: 5px 5px 5px #888;
+	background:#EEDC82;
 	
 	
 }
@@ -128,21 +132,77 @@ font-size:11px;
 }
 
 input{
-	width:180px;
+	width:190px;
 	height:25px;
 	margin-top:10px;
 }
 
 textarea{
-	width:180px;
+	width:190px;
 	margin-top:10px;
 }
 
 select{
-	width:180px;
+	width:190px;
+	height:25px;
 	margin-top:10px;
 }
+
 .radio
 {
 	width:20px;
+}
+
+
+
+#logout{
+	float:right;
+	padding:20px;
+}
+
+.text
+{
+	font-family:Aerial;
+	font-size:17px;
+	color:#6F3A15;
+	text-align:justify;
+	padding:5px;
+	
+}
+.labels
+{
+	font-family:Tahoma, Verdana;
+	font-size:13px;
+	color:#6F3A15;
+	font-weight:bold;
+	
+}
+
+form{
+	border:solid #6F3A15 4px;
+	box-shadow: 5px 5px 5px #888;
+	background:#EEDC82;
+}
+
+h1{
+	font-family:Aerial;
+	color:#8B4513;
+}
+
+.box
+{
+	width:90%;
+	height:90%
+	border:solid #6F3A15 4px;
+	box-shadow: 5px 5px 5px #888;
+	background:#EEDC82;
+}
+
+.tiny
+{
+	font-family:Tahoma, Verdana;
+	font-size:10px;
+	color:#6F3A15;
+	font-weight:bold;
+	float:right;
 }

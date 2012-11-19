@@ -27,9 +27,6 @@ import HotelReservationSystem.model.CheckIn;
 import HotelReservationSystem.model.CheckOut;
 import HotelReservationSystem.model.Reservation;
 
-/**
- * Servlet implementation class CheckOutServlet
- */
 @WebServlet("/CheckOutServlet")
 public class CheckOutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -37,18 +34,13 @@ public class CheckOutServlet extends HttpServlet {
 	String page = "CheckoutSuccess.jsp";
 	String Wrongpage = "InvalidCheckout.jsp";
 	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public CheckOutServlet() {
         super();
+     
     }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
 		System.out.println(request.getParameter("CheckInId"));
 		
@@ -75,21 +67,24 @@ public class CheckOutServlet extends HttpServlet {
 						
 						Query query1 = session.createQuery("from Reservation where ReserveId= :ReserveId");
 						query1.setParameter("ReserveId",checkInList.get(0).getReserveId());
+						
+						@SuppressWarnings("unchecked")
 						List<Reservation> reserveList = query1.list();
-						System.out.println("list size RES two "+query1.list().size());
+
+						
 						try {
 							
 								checkOut.setReserveId(checkInList.get(0).getReserveId());
 								checkOut.setRoomNo(checkInList.get(0).getRoomNo());
 								checkOut.setGuestid(reserveList.get(0).getGuestId());
 								checkOut.setPnr(reserveList.get(0).getPnr());
+								
 								Calendar checkOutdate = Calendar.getInstance();
 								
 								Date date = checkOutdate.getTime();
 								DateFormat df2 = DateFormat.getDateInstance(DateFormat.LONG);
 								String dt = df2.format(date);
 								
-								//System.out.println("date "+dt);
 								checkOut.setCheckOutDate(checkOutdate);
 								
 								DateFormat df3 = DateFormat.getTimeInstance(DateFormat.SHORT);
@@ -104,13 +99,25 @@ public class CheckOutServlet extends HttpServlet {
 								
 								updatequery.executeUpdate();
 								
+								// Calculation of days stayed...
+								
+								GregorianCalendar checkinDate = checkInList.get(0).getCheckInDate();
+								
+								int daysStayed = daysBetween(checkinDate, checkOutdate);
+								
+								checkOut.setDaysStayed(daysStayed);
+								
+								
 								session.save(checkOut);
 								
 								
+
+								HttpSession sessionObj=null;
+								sessionObj=request.getSession(true);
+								sessionObj.setAttribute("checkoutid",checkOut.getCheckOutId());
+								
 								Reservation res=(Reservation)reserveList.get(0);								
 								session.delete(res);
-								
-								
 								
 								tran.commit();
 								
@@ -165,5 +172,18 @@ public class CheckOutServlet extends HttpServlet {
 	    return sessionFactory;
 
 		}
-	
+		
+		private static int daysBetween(Calendar startDate, Calendar endDate)
+		{  
+			  Calendar date = (Calendar) startDate.clone();  
+			  int daysBetween = 0;  
+			  while (date.before(endDate)) 
+			  {  
+			    date.add(Calendar.DAY_OF_MONTH, 1);  
+			    daysBetween++;  
+			  }  
+			 
+			  return daysBetween;  
+		} 
+
 }

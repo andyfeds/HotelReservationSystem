@@ -2,6 +2,7 @@ package HotelReservationSystem.controller;
 
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -22,6 +24,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
 import HotelReservationSystem.model.CreditCard;
 import HotelReservationSystem.model.Guest;
 import HotelReservationSystem.model.Reservation;
+import HotelReservationSystem.model.RoomTypes;
 
 
 @WebServlet("/guestReservationServlet")
@@ -79,6 +82,20 @@ public class guestReservationServlet extends HttpServlet {
 				    card.setGuestid(guest.getGuestId());
 				    card.setReservationid(res.getReserveId());
 				    session.save(card);
+				    
+				    
+				    Query query = session.createQuery("from RoomTypes where roomtypeid= :roomtypeid");
+					query.setParameter("roomtypeid",(String)ses.getAttribute("roomsTypeId"));
+					
+					@SuppressWarnings("unchecked")
+					List<RoomTypes> typelist=query.list();
+				    
+					int numrooms=(Integer)ses.getAttribute("noRooms");
+					RoomTypes rt = (RoomTypes)typelist.get(0);
+					rt.setAvailRooms(rt.getAvailRooms()-numrooms);
+					session.update(rt);
+				    
+				    
 				    tran.commit();
 				    
 				    request.setAttribute("pnr",res.getPnr());

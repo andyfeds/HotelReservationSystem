@@ -10,9 +10,11 @@
 </head>
 <body>
 <div id="main">
-	  <jsp:include page="header.html" />
+	<jsp:include page="ReceptHeader.html" />
 	<div id="content">
-			<div id="left"><%=request.getAttribute("msg") %></div>
+			<div id="left">
+			<h1>Check Out Guest</h1>
+			<%=request.getAttribute("msg") %></div>
 			<div id="right"></div>
 	</div>
 	  <jsp:include page="footer.html" />

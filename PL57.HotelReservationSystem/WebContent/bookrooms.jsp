@@ -38,6 +38,7 @@ height: 20px;
 
 
 <div>
+<h1>Book Rooms</h1>
 <form class="form" method="POST" action="checkRoomTypeServlet" onSubmit="return RequiredField(this);">
 <table>
 <tr><td>
@@ -71,7 +72,7 @@ required="true" onChange="arrival.constraints.max = arguments[0];"/><span id="er
 <select name="roomsnum">
  <%
  int i;
- for(i=1;i<=5;i++){
+ for(i=1;i<=2;i++){
  %>
  <option value="<%=i%>"><%=i%></option>
 <%} %>
@@ -85,8 +86,6 @@ required="true" onChange="arrival.constraints.max = arguments[0];"/><span id="er
  <select name="adults">
  <option value="1">1 Adult</option>
  <option value="2">2 Adults</option>
- <option value="4">4 Adults</option>
- <option value="6">6 Adults</option>
  </select>
  </td>
  </tr>
@@ -98,8 +97,6 @@ required="true" onChange="arrival.constraints.max = arguments[0];"/><span id="er
  <option value="0">No Children</option>
  <option value="1">1 Child</option>
  <option value="2">2 Children</option>
- <option value="3">3 Children</option>
- <option value="4">4 Children</option>
  </select>
  </td>
  </tr>
@@ -113,8 +110,8 @@ required="true" onChange="arrival.constraints.max = arguments[0];"/><span id="er
 </form>
 
 	<div id="roomstatus">
-	
-	<span class="error"><%=request.getParameter("msg") %></span>
+	<%if(request.getAttribute("msg")!=null) {%>
+	<span class="error"><%=request.getParameter("msg") %></span><%}%>
 	
 	</div>
 </div>

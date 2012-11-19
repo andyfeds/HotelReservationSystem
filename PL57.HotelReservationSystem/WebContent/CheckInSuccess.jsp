@@ -9,11 +9,12 @@
 </head>
 <body>
 	<div id="main">
-	  <jsp:include page="header.html" />
+	  <jsp:include page="ReceptHeader.html" />
 	<div id="content">
 			<div id="left">
-			<div>
+			<div class="box">
 					<h4>Successful Check in!!!!</h4>
+					Your Check In Id is : <span id="errormsg"><%=request.getAttribute("check") %></span>
 			</div>
 	</div>
 			<div id="right"></div>

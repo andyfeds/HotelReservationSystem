@@ -10,10 +10,11 @@
 <body>
 	
 	<div id="main">
-	  <jsp:include page="header.html" />
+	  <jsp:include page="ReceptHeader.html" />
 	<div id="content">
 			<div id="left">
 			<div>
+			<h1>Check In Guest</h1>
 			<form action="CheckInServlet" method="post">
 				<div>Enter PNR :  
 					<input name="Pnr" type="text" /><br />

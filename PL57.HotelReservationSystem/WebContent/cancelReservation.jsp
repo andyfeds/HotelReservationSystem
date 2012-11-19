@@ -13,8 +13,11 @@
 	  <jsp:include page="header.html" />
 	<div id="content">
 			<div id="left">
-			<form method="POST" action="cancelReservationServlet">
-			 <div>Enter PNR Number : <input type="text" name="pnr"></div>
+			<h1>Cancel Reservation</h1>
+			<form method="POST" action="cancelReservationServlet" onSubmit="return (RequiredField(this))">
+			 <div>Enter PNR Number : <input type="text" name="pnr">
+			 <span id="error_pnr" class="error"></span>
+			 </div>
 			<div><input type="submit" value="Submit"></div> 
 			</form>
 			</div>

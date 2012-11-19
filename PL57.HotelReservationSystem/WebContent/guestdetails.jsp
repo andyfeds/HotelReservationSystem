@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Royal Stags Hotel</title>
+<title>Royal Stags Hotel: Guest Details</title>
 <link href="css.css" rel="stylesheet" type="text/css" />
 <script src="validation.js"></script>
 </head>
@@ -14,8 +14,9 @@
 	  <jsp:include page="header.html" />
 	<div id="content">
 			<div id="left">
+			<h1>Guest Details</h1>
 			
-<form name="frm" class="form" method="POST" action="guestReservationServlet" onSubmit="return (checkValid(this) && validateEmail() && RequiredField(this) && validateNumber(this));">
+<form name="frm" class="form" method="POST" action="guestReservationServlet" onSubmit="return (RequiredField(this) && checkValid(this) && validateEmail()&& validateNumber(this));">
 <table>
 <tr>
 <td>First name:</td>
@@ -37,7 +38,7 @@
 
 <tr>
 <td>Phone No.:</td>
-<td><input id="pnumber" type="text" name="phnum" />
+<td><input type="text" name="phnum" />
 <span id="error_phnum" class="error">*</span></td>
 </tr>
 

@@ -8,9 +8,10 @@
 </head>
 <body>
 	<div id="main">
-	  <jsp:include page="header.html" />
+	  <jsp:include page="ReceptHeader.html" />
 	<div id="content">
 			<div id="left">
+			<h1>Check Out Guest</h1>
 			<div>
 					<h4>This is an Invalid Check in ID!!! Please Confirm....</h4>
 			</div>

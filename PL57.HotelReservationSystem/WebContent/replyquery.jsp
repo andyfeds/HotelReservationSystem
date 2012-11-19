@@ -10,7 +10,7 @@
 </head>
 <body>
 <div id="main">
-	  <jsp:include page="header.html" />
+	<jsp:include page="ReceptHeader.html" />
 	<div id="content">
 			<div id="left">
 			

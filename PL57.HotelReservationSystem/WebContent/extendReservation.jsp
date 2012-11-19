@@ -11,7 +11,7 @@
 <link href="dojo-release-1.8.0/dojox/widget/Calendar/Calendar.css" rel="stylesheet" type="text/css" />
 
 <script src='dojo-release-1.8.0/dojo/dojo.js' data-dojo-config='parseOnLoad: true'></script>
-
+<script src="validation.js"></script>
 <script>require(["dojo/parser", "dijit/form/DateTextBox"]);</script>
 
 <style>
@@ -29,12 +29,15 @@ height: 20px;
 </head>
 <body class="tundra">
 <div id="main">
-	  <jsp:include page="header.html" />
+	  <jsp:include page="ReceptHeader.html" />
 	<div id="content">
-	EXTEND YOUR STAY...
+	
 			<div id="left">
-			<form method="POST" action="extendReservationServlet">
-			<div>Enter PNR Number : <input type="text" name="pnr"  /></div>
+			<h1>Extend Guest Stay</h1>
+			<form method="POST" action="extendReservationServlet" onSubmit="return (RequiredField(this))">
+			<div>Enter PNR Number : <input type="text" name="pnr"  />
+			<span id="error_pnr" class="error"></span>
+			</div>
 			 <div>Enter New Date of Departure : <input constraints="{datePattern:'yyyy-MM-dd'}" data-dojo-id="newdeparture" type="text" name="dodep" id="dodep" value="Select New Date of Departure" data-dojo-type="dijit/form/DateTextBox" 
 					required="true" /></div>
 			<div><input type="submit" value="Submit"></div> 

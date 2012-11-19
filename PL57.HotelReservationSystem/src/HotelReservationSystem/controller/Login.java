@@ -67,7 +67,7 @@ public class Login extends HttpServlet
 						}							
 						else
 						{
-						uname=userNameList.get(0).geteId();
+						uname=userNameList.get(0).getUsername();
 						pass=userNameList.get(0).getPassword();
 					   	
 					   

@@ -97,8 +97,10 @@ public class CheckInServlet extends HttpServlet {
 							updatequery.executeUpdate();
 							
 							session.save(checkIn);
-							tran.commit();
 							
+							
+							request.setAttribute("check",checkIn.getCheckInId());
+							tran.commit();
 							RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 
 							  if (dispatcher != null){

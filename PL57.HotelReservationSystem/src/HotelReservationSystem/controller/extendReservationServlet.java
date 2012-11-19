@@ -59,6 +59,7 @@ public class extendReservationServlet extends HttpServlet {
 				query.setParameter("pnr",Integer.parseInt(request.getParameter("pnr")));
 				
 				
+				@SuppressWarnings("unchecked")
 				List<Reservation> roomTypeList=query.list();
 			
 				
@@ -128,6 +129,14 @@ public class extendReservationServlet extends HttpServlet {
 			catch (Exception e) {
 				session.getTransaction().rollback();
 				System.out.println("Error");
+				request.setAttribute("msg","Unexpected Error..Cannot Extend");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("cancelReservationStatus.jsp");
+
+				  if (dispatcher != null){
+
+				  dispatcher.forward(request, response);
+
+				  } 
 			}
 			finally{
 				session.close();

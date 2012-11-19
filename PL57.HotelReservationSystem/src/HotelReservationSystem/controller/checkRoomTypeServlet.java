@@ -61,7 +61,7 @@ public class checkRoomTypeServlet extends HttpServlet {
 				
 					if(noRooms>list.get(0).getAvailRooms())
 					{
-						request.setAttribute("msg","Type of Room selected not available.");
+						request.setAttribute("msg","Type of Room selected not available");
 						RequestDispatcher dispatcher= request.getRequestDispatcher("/roomtypesServlet");  
 							  if (dispatcher != null)
 							  dispatcher.forward(request, response);
@@ -137,7 +137,7 @@ public class checkRoomTypeServlet extends HttpServlet {
 							
 							@SuppressWarnings("unchecked")
 							List<RoomTypes> typelist=query3.list();
-							System.out.print(typelist.get(0).getRoomtypeid());
+							
 							
 							ses.setAttribute("aDate",aDate);
 							ses.setAttribute("dDate",dDate);

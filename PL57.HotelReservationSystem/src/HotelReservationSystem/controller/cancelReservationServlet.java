@@ -46,7 +46,7 @@ public class cancelReservationServlet extends HttpServlet {
 			try {
 				Calendar cDate=new GregorianCalendar();
 				Calendar cancelDate=new GregorianCalendar();
-				cDate.set(2012,11,16);
+				cDate.set(2012,11,3);
 				cancelDate=cDate;
 				int day,month,year;
 				Calendar aDate,dDate;

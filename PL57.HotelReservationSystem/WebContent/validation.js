@@ -63,16 +63,15 @@
   }
 
   
-  function trim(s) 
-  {
+  function trim(s) {
 	    return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
-  }
+	}
 
   
-  function checkValid(f)
-  {
-	  var cardNumber=f.cardno.value;
-	  if(document.getElementById('c1').checked) {
+  function checkValid(f){
+var cardNumber=f.cardno.value;
+
+	if(document.getElementById('c1').checked) {
 		  	if(!isValidVISA(cardNumber)){
 		  		document.getElementById("error_cardno").innerHTML="Invalid VISA Card No";
 				return false;
@@ -92,9 +91,11 @@
 		return true;
   }	
   
+  
+  
+  
   function RequiredField(f)
-  {
-	 var i,field;
+  {var i,field;
 	  for(i=0; i<f.elements.length; i++){
 		 field=f.elements[i].name;
 		 value=trim(f.elements[i].value);
@@ -125,10 +126,11 @@
   return true;
   }
   
-  function validateNumber()
+  
+  function validateNumber(f)
   {
 	  var number = /^[0-9]+$/;
-	  input = document.getElementById("pnumber").value;
+	  input =f.phnum.value;
 	  if(input.match(number))
 		  {
 		  	return true;

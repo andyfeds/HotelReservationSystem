@@ -39,6 +39,7 @@
         <mapping class="HotelReservationSystem.model.CheckIn"/>
         <mapping class="HotelReservationSystem.model.Room"/>
         <mapping class="HotelReservationSystem.model.CheckOut"/>
+        <mapping class="HotelReservationSystem.model.QueryReply"/>
        
 
     </session-factory>
